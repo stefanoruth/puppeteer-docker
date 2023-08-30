@@ -29,6 +29,8 @@ RUN mkdir /opt/nodejs &&\
 
 RUN echo "node $(node -v)\nyarn $(yarn -v)\ncache $(yarn cache dir)"
 
+# Install Puppeteer
+ENV PUPPETEER_SKIP_DOWNLOAD true
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg &&\
     sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' &&\
     apt-get update &&\
