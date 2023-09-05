@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 as img1
 
 ENV NODE_VERSION v18.13.0
 ENV YARN_VERSION v1.22.19
@@ -40,9 +40,16 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --d
 
 # CMD ["google-chrome-stable --headless --dump-dom https://icanhazip.com --no-sandbox"]
 
+FROM img1
 
 WORKDIR /code
 
 COPY . .
 
 RUN yarn install
+
+RUN useradd dev -d /code -s /bin/bash && echo "dev:saterist" | chpasswd && adduser dev sudo
+
+RUN chown -R dev:dev /code && chmod 755 /code 
+
+USER dev
