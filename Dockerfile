@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 as img1
+FROM ubuntu:22.04
 
 ENV NODE_VERSION v18.13.0
 ENV YARN_VERSION v1.22.19
@@ -40,16 +40,23 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --d
 
 # CMD ["google-chrome-stable --headless --dump-dom https://icanhazip.com --no-sandbox"]
 
-FROM img1
-
 WORKDIR /code
 
 COPY . .
 
 RUN yarn install
 
-RUN useradd dev -d /code -s /bin/bash && echo "dev:saterist" | chpasswd && adduser dev sudo
 
-RUN chown -R dev:dev /code && chmod 755 /code 
+# RUN useradd dev -d /code -s /bin/bash && echo "dev:saterist" | chpasswd && adduser dev sudo
+
+# RUN chown -R dev:dev /code && chmod 755 /code
+# RUN chmod -R o+rwx node_modules/puppeteer/.local-chromium
+
+RUN groupadd -r dev
+RUN useradd -r -g dev -G audio,video dev
+RUN mkdir -p /home/dev
+RUN chown -R dev:dev /home/dev
+RUN chown -R dev:dev /code
+RUN chown -R dev:dev /code/node_modules
 
 USER dev
