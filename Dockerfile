@@ -57,6 +57,5 @@ RUN useradd -r -g dev -G audio,video dev
 RUN mkdir -p /home/dev
 RUN chown -R dev:dev /home/dev
 RUN chown -R dev:dev /code
-RUN chown -R dev:dev /code/node_modules
 
 USER dev
